@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     stream = require('stream'),
     gulpReplace = require('gulp-replace'),
-    gulpDebug = require("gulp-debug");
+    gulpDebug = require("gulp-debug"),
+    embedTemplates = require('gulp-angular-embed-templates');
 
 var defaultOptions = {
   watch: false,
@@ -56,6 +57,7 @@ module.exports = function(options) {
         .on('error', options.onError)
         .pipe(source(options.outputFile))
         .pipe(buffer())
+        .pipe(embedTemplates({sourceType:'ts'}))
         .pipe(debug ? sourcemaps.init({loadMaps: true}) : noop())
         .pipe(options.minify ? uglify(options.uglifyOptions) : noop())
         .pipe(debug ? sourcemaps.write('./') : noop())
